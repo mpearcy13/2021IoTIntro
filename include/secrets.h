@@ -10,9 +10,6 @@ const char *WIFI_PASSWORD = "ADDHERE";
 // The MQTTT endpoint for the device (unique for each AWS account but shared amongst devices within the account)
 #define AWS_IOT_ENDPOINT "ADDHERE"
 
-// The MQTT topic that this device should publish to
-#define AWS_IOT_TOPIC "$aws/things/" DEVICE_NAME "/shadow/update"
-
 // AWS IOT Certificates
 const char aws_root_ca_pem[] = {"-----BEGIN CERTIFICATE-----\n\
 MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF\n\
