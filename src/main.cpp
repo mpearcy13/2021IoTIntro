@@ -9,7 +9,15 @@ WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(1024);
 
 // Light LED
-#define LED_PIN 2
+#define LED_PIN 21
+
+// Variables for IoT Topics to subscribe in Setup
+char awsIotTopicUpdateDelta[128];
+char awsIotTopicGetAccepted[128];
+
+// Variables for IoT Topics to publish to
+char awsIotTopicUpdate[128];
+char awsIotTopicGet[128];
 
 // ------------------------------------------------------------------------------------------------
 // Function Declarations
@@ -18,15 +26,8 @@ MQTTClient client = MQTTClient(1024);
 void connectToWiFi();
 void connectToAwsIot();
 void messageHandler(String &topic, String &payload);
-void publishMessage();
-//void shadowGet();
-//void shadowPubMessage();
-//int shadowSubscribeTopic(String topicName);
-//void jsonAlarmState (char* outString, int timeStamp, float temperature, int humidity, int waterReading, bool alarmState);
-//void jsonCreateTopicUpdate (char* outString, int timeStamp, float temperature, int humidity, int waterReading, int alarmState);
-//void jsonCreateStateReported (char* outString, int timeStamp, float temperature, int humidity, int waterReading, int alarmState);
-//void jsonCreateAlarm (char* outString, int timeStamp, float temperature, int humidity, int waterReading, int alarmState);
-
+void publishMessage(int fLightStatus);
+void getIotState();
 
 // ------------------------------------------------------------------------------------------------
 // Setup Function
@@ -45,15 +46,24 @@ void setup() {
   // Connect to AWS IoT Core
   connectToAwsIot();
   
-  client.subscribe("$aws/things/esp_light2/shadow/update/delta");
+  // Subscribe to IoT Topics
+  snprintf((awsIotTopicUpdateDelta), sizeof(awsIotTopicUpdateDelta), "%s%s%s", "$aws/things/", DEVICE_NAME, "/shadow/update/delta");
+  client.subscribe(awsIotTopicUpdateDelta);
+  
+  snprintf(awsIotTopicGetAccepted, sizeof(awsIotTopicGetAccepted), "%s%s%s", "$aws/things/", DEVICE_NAME, "/shadow/get/accepted");
+  client.subscribe(awsIotTopicGetAccepted);
+  
   client.subscribe("Test123");
 
+  // Setup IoT Topic for publishing.
+  snprintf((awsIotTopicUpdate), sizeof(awsIotTopicUpdate), "%s%s%s", "$aws/things/", DEVICE_NAME, "/shadow/update");
+  snprintf((awsIotTopicGet), sizeof(awsIotTopicGet), "%s%s%s", "$aws/things/", DEVICE_NAME, "/shadow/get");
 
   // CHECK - Is this required?
-  delay(100);        
+  //delay(100);   
 
   // publish to Classic Shadow /get to receive current configuration message.
-  //shadowGet();
+  getIotState();
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -91,7 +101,7 @@ void connectToWiFi() {
 // connectToAwsIot Function
 // ------------------------------------------------------------------------------------------------
 
-void connectToAwsIot()
+void connectToAwsIot() 
 {
   //Configure Wifi to use AWS IoT Certificates
   net.setCACert(aws_root_ca_pem);
@@ -126,36 +136,71 @@ void connectToAwsIot()
 
 void messageHandler(String &topic, String &payload) {
 
-  Serial.print("INFO: Starting Message Handler: ");
+  Serial.print("INFO: Starting Message Handler.  Topic: ");
   Serial.println(topic.c_str());
   Serial.println("INFO: Payload: ");
   Serial.println(payload);
 
+  // If Topic is from /Update/delta then use this code to parse JSON.
+  if(strstr(topic.c_str(), "update/delta") != NULL) {
+    // Parse JSON payload from IoT Core MQTT Queues
+    StaticJsonDocument<1024> doc;
+    deserializeJson(doc, payload);   // DOCUMENTATION HERE https://arduinojson.org/v6/doc/deserialization/
 
-  StaticJsonDocument<1024> doc;
-  deserializeJson(doc, payload);   // DOCUMENTATION HERE https://arduinojson.org/v6/doc/deserialization/
-
-  if (doc["state"]["lightstatus"] == 1) {
-    Serial.println("INFO: Turning on LED.");
-    digitalWrite(LED_PIN, HIGH); //Turn On LED
-  } else if (doc["state"]["lightstatus"] == 0) {
-    Serial.println("INFO: Turning off LED.");
-    digitalWrite(LED_PIN, LOW);
+    if (doc["state"]["lightstatus"] == 1) {
+      Serial.println("INFO: Turning on LED.");
+      digitalWrite(LED_PIN, HIGH); //Turn On LED
+      publishMessage(1);
+    } else if (doc["state"]["lightstatus"] == 0) {
+      Serial.println("INFO: Turning off LED.");
+      digitalWrite(LED_PIN, LOW);
+      publishMessage(0);
+    }
   }
+  // If topic is from /get/accepted this it will use this code to parse JSON.
+  if(strstr(topic.c_str(), "get/accepted") != NULL) {
+    // Parse JSON payload from IoT Core MQTT Queues
+    StaticJsonDocument<1024> doc;
+    deserializeJson(doc, payload);   // DOCUMENTATION HERE https://arduinojson.org/v6/doc/deserialization/
 
+    if (doc["state"]["desired"]["lightstatus"] == 1) {
+      Serial.println("INFO: Turning on LED.");
+      digitalWrite(LED_PIN, HIGH); //Turn On LED
+      publishMessage(1);
+    } else if (doc["state"]["desired"]["lightstatus"] == 0) {
+      Serial.println("INFO: Turning off LED.");
+      digitalWrite(LED_PIN, LOW);
+      publishMessage(0);
+    }
+  }
 }
 
 // ------------------------------------------------------------------------------------------------
 // Publish Message
 // ------------------------------------------------------------------------------------------------
 
-void publishMessage()
+void publishMessage(int fLightStatus)
 {
-  //StaticJsonDocument<200> doc;
-  //doc["time"] = millis();
-  //doc["sensor_a0"] = analogRead(0);
-  //char jsonBuffer[512];
-  //serializeJson(doc, jsonBuffer); // print to client
+  // Create JSON document to send back to AWS IOT Core.
+  StaticJsonDocument<200> doc;
+  JsonObject obj = doc.createNestedObject("state");
+  obj = obj.createNestedObject("reported");
+  obj["lightstatus"] = fLightStatus;
 
-  //client.publish(AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
+  char jsonBuffer[512];
+  serializeJson(doc, jsonBuffer);
+
+  client.publish(awsIotTopicUpdate, jsonBuffer);
+}
+
+void getIotState()
+{
+  //Serial.println("");
+  Serial.println("\nINFO: Requesting status from Device Shadow.");
+  
+  StaticJsonDocument<200> doc;
+  char jsonBuffer[128];
+  serializeJson(doc, jsonBuffer);
+
+    client.publish(awsIotTopicGet, jsonBuffer);
 }
