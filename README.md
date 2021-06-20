@@ -16,7 +16,7 @@ How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 ```
 git clone https://github.com/mpearcy13/2021IoTIntro.git
 ```
-3. Create a new project in PIO pointing to the directory cloned.
+2. Create a new project in PIO pointing to the directory cloned.
 
 ## Create Policy
 1. Connect to AWS Console and open **IoT Core**
