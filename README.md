@@ -1,4 +1,4 @@
-# 2021 IoT ESP32 and Shadows
+# 2021 IoT ESP32 using AWS IoT Shadows
 
 IoT Getting Started - ESP32 with flashing LED
 
@@ -61,7 +61,8 @@ How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 9. [OPTIONAL] in main.cpp change the "LED_PIN" to 2 if using the onboard ESP32 LED instead of an extneral LED.
 10. Connect the ESP32 to the USB port on your system.
 11. Click the PlatformIO Upload button ➡️ on the bottom bar.
-12. Then client the PlatformIO Serial Monitor button 🔌 to view the serial output for the ESP32.
+12. When prompted in the console ....._____....._____ press the right hand button on the ESP32 to load the software.
+13. Then client the PlatformIO Serial Monitor button 🔌 to view the serial output for the ESP32.
 
 ## Testing
 Open **MQTT Test** and send the following messages:
