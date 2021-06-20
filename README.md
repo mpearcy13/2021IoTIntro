@@ -35,7 +35,7 @@ How to get started - https://bit.ly/3ctJioK
 Open **MQTT Test** and send the following messages:
 
 To turn off the light...
-Topic: $aws/things/**DEVICENAME**/things/shadow/update
+Topic: $aws/things/**DEVICENAME**/shadow/update
 ```
 {
   "state": {
@@ -47,7 +47,7 @@ Topic: $aws/things/**DEVICENAME**/things/shadow/update
 ```
 
 To turn on the light...
-Topic: $aws/things/**DEVICENAME**/things/shadow/update
+Topic: $aws/things/**DEVICENAME**/shadow/update
 ```
 {
   "state": {
@@ -56,4 +56,16 @@ Topic: $aws/things/**DEVICENAME**/things/shadow/update
     }
   }
 }
+```
+
+To get the thing's Device Shadows settings...
+Subscribe to topics:
+  1. $aws/things/**DEVICENAME**/shadow/get/accepted
+  2. $aws/things/**DEVICENAME**/shadow/get/rejected
+
+Send an empty JSON document to the following topic:
+$aws/things/**DEVICENAME**/shadow/get
+
+```
+{}
 ```
