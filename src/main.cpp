@@ -59,9 +59,6 @@ void setup() {
   snprintf((awsIotTopicUpdate), sizeof(awsIotTopicUpdate), "%s%s%s", "$aws/things/", DEVICE_NAME, "/shadow/update");
   snprintf((awsIotTopicGet), sizeof(awsIotTopicGet), "%s%s%s", "$aws/things/", DEVICE_NAME, "/shadow/get");
 
-  // CHECK - Is this required?
-  //delay(100);   
-
   // publish to Classic Shadow /get to receive current configuration message.
   getIotState();
 }
@@ -74,6 +71,7 @@ void loop() {
 
   // Setup MQTT Client Loop
   client.loop();
+  
   delay(1000);
 }
 
@@ -193,14 +191,18 @@ void publishMessage(int fLightStatus)
   client.publish(awsIotTopicUpdate, jsonBuffer);
 }
 
+// ------------------------------------------------------------------------------------------------
+// Get Shadow Configuration
+// ------------------------------------------------------------------------------------------------
+
+
 void getIotState()
 {
-  //Serial.println("");
   Serial.println("\nINFO: Requesting status from Device Shadow.");
   
   StaticJsonDocument<200> doc;
   char jsonBuffer[128];
   serializeJson(doc, jsonBuffer);
 
-    client.publish(awsIotTopicGet, jsonBuffer);
+  client.publish(awsIotTopicGet, jsonBuffer);
 }
