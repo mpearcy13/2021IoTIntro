@@ -6,7 +6,9 @@ This project is an introduction to AWS IoT Core and using Classic Shadows to con
 
 
 https://platformio.org/
+
 How to get started - https://bit.ly/3ctJioK
+
 How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 
 ## Sync code from Github
