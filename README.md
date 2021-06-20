@@ -30,3 +30,30 @@ How to get started - https://bit.ly/3ctJioK
 2. Click on Security
 3. Open Certificate
 4. From the action menu, choose **Activate**
+
+## Testing
+Open **MQTT Test** and send the following messages:
+
+To turn off the light...
+Topic: $aws/things/**DEVICENAME**/things/shadow/update
+```
+{
+  "state": {
+    "desired": {
+      "lightstatus": 0
+    }
+  }
+}
+```
+
+To turn on the light...
+Topic: $aws/things/**DEVICENAME**/things/shadow/update
+```
+{
+  "state": {
+    "desired": {
+      "lightstatus": 1
+    }
+  }
+}
+```
