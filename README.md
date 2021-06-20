@@ -11,7 +11,22 @@ How to get started - https://bit.ly/3ctJioK
 2. Create a new project in PIO pointing to the directory cloned.
 
 ## Create Policy
-1. **UPDATE**
+1. Connect to AWS Console and open **IoT Core**
+2. Open **Security** and select **Policies**
+3. Create a new Policy
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "iot:*",
+      "Resource": "arn:aws:iot:**REGION**:**ACCOUNTNUMBER**:*"
+    }
+  ]
+}
+```
 
 ## Setup AWS IoT Thing
 1.  Connect to AWS Console.
