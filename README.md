@@ -1,10 +1,13 @@
-# 2021IoTIntro
+# 2021 IoT ESP32 and Shadows
+
 IoT Getting Started - ESP32 with flashing LED
 
+This project is an introduction to AWS IoT Core and using Classic Shadows to control the state of the device.  The device will use the shadow to turn on and off a LED connected to PIN 21 or the onboard LED using pin 2.
+
+
 https://platformio.org/
-How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 How to get started - https://bit.ly/3ctJioK
-<img width="536" alt="image" src="https://user-images.githubusercontent.com/54077762/122655652-4956b300-d111-11eb-9cd0-8f103fab9bd8.png">
+How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 
 ## Sync code from Github
 1. Clone GitHub repository
@@ -45,6 +48,20 @@ How to get started - https://bit.ly/3ctJioK
 2. Click on Security
 3. Open Certificate
 4. From the action menu, choose **Activate**
+
+## Update Project and load your ESP32
+1. Open the Project in Visual Studio
+2. Open secrets.h
+3. Update the "DEVICE_NAME" to match the Thing created above.
+4. Update the "WIFI_SSID"
+5. Update the "WIFI_PASSWORD"
+6. Update the "AWS_IOT_ENDPOINT" (Available from IoT Core console under settings)
+7. Copy the certificate for the device and copy to "certificate_pem_crt".  Add **\n\** to each line and **\n** to the last line.
+8. Copy the private key to "private_pem_key".  Add **\n\** to each line and **\n** to the last line.
+9. [OPTIONAL] in main.cpp change the "LED_PIN" to 2 if using the onboard ESP32 LED instead of an extneral LED.
+10. Connect the ESP32 to the USB port on your system.
+11. Click the PlatformIO Upload button ➡️ on the bottom bar.
+12. Then client the PlatformIO Serial Monitor button 🔌 to view the serial output for the ESP32.
 
 ## Testing
 Open **MQTT Test** and send the following messages:
