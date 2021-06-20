@@ -11,7 +11,10 @@ How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 
 ## Sync code from Github
 1. Clone GitHub repository
-2. Create a new project in PIO pointing to the directory cloned.
+```
+git clone https://github.com/mpearcy13/2021IoTIntro.git
+```
+3. Create a new project in PIO pointing to the directory cloned.
 
 ## Create Policy
 1. Connect to AWS Console and open **IoT Core**
@@ -61,11 +64,11 @@ How to install PlatformIO in VS Code - https://bit.ly/354Q0NV
 9. [OPTIONAL] in main.cpp change the "LED_PIN" to 2 if using the onboard ESP32 LED instead of an extneral LED.
 10. Connect the ESP32 to the USB port on your system.
 11. Click the PlatformIO Upload button ➡️ on the bottom bar.
-12. When prompted in the console ....._____....._____ press the right hand button on the ESP32 to load the software.
+12. When prompted in the console "Connecting....._____....._____" press the right hand button on the ESP32 to load the software.
 13. Then client the PlatformIO Serial Monitor button 🔌 to view the serial output for the ESP32.
 
 ## Testing
-Open **MQTT Test** and send the following messages:
+Open **MQTT Test client** and send the following messages:
 
 To turn off the light...
 Topic: $aws/things/**DEVICENAME**/shadow/update
