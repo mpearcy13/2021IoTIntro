@@ -32,6 +32,8 @@ o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU\n\
 rqXRfboQnoZsG4q5WTP468SQvvG5\n\
 -----END CERTIFICATE-----\n"};
 
-const char certificate_pem_crt[] = {};
+// Thing Certificate
+const char certificate_pem_crt[] = {"ADDHERE"};
 
-const char private_pem_key[] = {};
+// Device Private Key
+const char private_pem_key[] = {"ADDHERE"};
