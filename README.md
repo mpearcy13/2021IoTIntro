@@ -36,6 +36,9 @@ git clone https://github.com/mpearcy13/2021IoTIntro.git
 }
 ```
 
+This policy will **Allow** access to **All IoT** services.
+
+
 ## Setup AWS IoT Thing
 1.  Connect to AWS Console.
 2.  Open **IoT Core**
@@ -46,28 +49,31 @@ git clone https://github.com/mpearcy13/2021IoTIntro.git
     * A certificate for this thing
     * A private key
     * Root CA for AWS IoT
-8. Select your Device Policy.
+8. Select your Device Policy that was created in previous step.
 
 ## Activate Certificate
-1. Open Thing in console
-2. Click on Security
-3. Open Certificate
+1. Open **Thing** under Manage in **IoT Core** console
+2. Click on **Security**
+3. Open the assigned certificate
 4. From the action menu, choose **Activate**
 
 ## Update Project and load your ESP32
 1. Open the Project in Visual Studio
-2. Open secrets.h
-3. Update the "DEVICE_NAME" to match the Thing created above.
-4. Update the "WIFI_SSID"
-5. Update the "WIFI_PASSWORD"
-6. Update the "AWS_IOT_ENDPOINT" (Available from IoT Core console under settings)
-7. Copy the certificate for the device and copy to "certificate_pem_crt".  Add **\n\** to each line and **\n** to the last line.
-8. Copy the private key to "private_pem_key".  Add **\n\** to each line and **\n** to the last line.
-9. [OPTIONAL] in main.cpp change the "LED_PIN" to 2 if using the onboard ESP32 LED instead of an extneral LED.
-10. Connect the ESP32 to the USB port on your system.
-11. Click the PlatformIO Upload button ➡️ on the bottom bar.
-12. When prompted in the console "Connecting....._____....._____" press the right hand button on the ESP32 to load the software.
-13. Then client the PlatformIO Serial Monitor button 🔌 to view the serial output for the ESP32.
+  1. Click **PlatformIO** in the left menu, then click **Open** under **PIO Home**
+  2. Click on **Open Project**
+  3. Browse to the directory containing the synced Github files.
+3. Open **secrets.h** in the **include** directory.
+4. Update the **DEVICE_NAME** to match the Thing created above.
+5. Update the **WIFI_SSID**
+6. Update the **WIFI_PASSWORD**
+7. Update the **AWS_IOT_ENDPOINT** (Available from IoT Core console under settings)
+8. Open the certificate for the device and copy & paste to **certificate_pem_crt**.  Add **\n\** to each line and **\n** to the last line.
+9. Open the private key and copy & paste to **private_pem_key**.  Add **\n\** to each line and **\n** to the last line.
+10. [OPTIONAL] in **main.cpp** change the **LED_PIN** to **2** if using the onboard ESP32 LED instead of an extneral LED.
+11. Connect the ESP32 to the USB port on your system.
+12. Click the PlatformIO Upload button ➡️ on the bottom bar.
+13. When prompted in the console "Connecting....._____....._____" press the right hand button on the ESP32 to load the software.
+14. Then client the PlatformIO Serial Monitor button 🔌 to view the serial output for the ESP32.
 
 ## Testing
 Open **MQTT Test client** and send the following messages:
