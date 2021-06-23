@@ -21,7 +21,7 @@ git clone https://github.com/mpearcy13/2021IoTIntro.git
 ## Create Policy
 1. Connect to AWS Console and open **IoT Core**
 2. Open **Security** and select **Policies**
-3. Create a new Policy
+3. Create a new Policy - Update **REGION** and **ACCOUNTNUMBER**
 
 ```
 {
@@ -30,7 +30,7 @@ git clone https://github.com/mpearcy13/2021IoTIntro.git
     {
       "Effect": "Allow",
       "Action": "iot:*",
-      "Resource": "arn:aws:iot:**REGION**:**ACCOUNTNUMBER**:*"
+      "Resource": "arn:aws:iot:REGION:ACCOUNTNUMBER:*"
     }
   ]
 }
