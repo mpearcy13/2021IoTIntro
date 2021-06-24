@@ -44,18 +44,20 @@ This policy will **Allow** access to **All IoT** services.
 2.  Open **IoT Core**
 4.  Open **Manager** then click on **Things**
 5.  Create a new Thing (Single Thing)
-6.  Create a certificate (One-click certificate creation)
-7.  Download the certificates
+  1. Add **Unnamed Shadow** and remove welcome to IOT messages from Desired and Reported states.
+7.  Create a certificate (One-click certificate creation)
+8.  Download the certificates
     * A certificate for this thing
     * A private key
     * Root CA for AWS IoT
-8. Select your Device Policy that was created in previous step.
+9. Select your Device Policy that was created in previous step.
 
-## Activate Certificate
+## Activate Certificate & Attach Policy
 1. Open **Thing** under Manage in **IoT Core** console
 2. Click on **Security**
 3. Open the assigned certificate
 4. From the action menu, choose **Activate**
+5. Attach a policy to the certificate.
 
 ## Update Project and load your ESP32
 1. Open the Project in Visual Studio
